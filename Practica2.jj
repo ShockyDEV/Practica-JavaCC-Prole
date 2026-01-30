@@ -136,7 +136,7 @@ void Axioma() :
 {
   <PROGRAMA> <ID> <PUNTO>
   <INICIO>
-  { genera_linea("; - INFRAESTRUCTURA base  -", false); }
+  // { genera_linea("; - INFRAESTRUCTURA base  -", false); }
   Sentencias()
   <FIN> <PUNTO>
   <EOF>
@@ -159,14 +159,46 @@ void Sentencia() :
     | Bucle()
     | Comparar()
   )
-  { genera_linea("; Detectada sentencia en: " + newLabel(), true); }
+  
+  // { genera_linea("; Detectada sentencia en: " + newLabel(), true); }
+  
   <PUNTO>
 }
 
-//  Reglas auxiliares temporales
+//  Reglas auxiliares 
 
-void Io() : {} { 
-  (<LEE> | <MUESTRA>) ( <ID> | <NUM> | <CAD> | <COMA> )* }
+// Entrada/Salida
+void Io() :
+{ Token t; int n; }
+{
+    <LEE> t = <ID>
+      { genera_linea("lee " + t.image, true); }
+  | <MUESTRA> 
+      n = ListaLiterales() // LLama a la regla que cuenta literales
+      { genera_linea("print " + n, true); }
+}
+
+
+//  cuántos literales hay en la lista
+int ListaLiterales() :
+{ int n = 1; }
+{
+  Literal() 
+  ( <COMA> Literal() { n++; } )* { return n; }
+}
+
+
+// Un literal puede ser un identificador, un número o una cadena
+void Literal() :
+{ Token t; }
+{
+    t = <ID> 
+      { genera_linea("valord " + t.image, true); }
+  | t = <NUM> 
+      { genera_linea("mete " + t.image, true); }
+  | t = <CAD>
+      { genera_linea("metecad " + t.image, true); }
+}
 
 void Asignar() : {} { 
   (<MUEVE> | <SUMA> | <RESTA> | <MULTIPLICA> | <DIVIDE>) 

@@ -56,7 +56,6 @@ public class practica2 implements practica2Constants {
     jj_consume_token(ID);
     jj_consume_token(PUNTO);
     jj_consume_token(INICIO);
-genera_linea("; - INFRAESTRUCTURA base  -", false);
     Sentencias();
     jj_consume_token(FIN);
     jj_consume_token(PUNTO);
@@ -119,20 +118,24 @@ genera_linea("; - INFRAESTRUCTURA base  -", false);
       jj_consume_token(-1);
       throw new ParseException();
     }
-genera_linea("; Detectada sentencia en: " + newLabel(), true);
     jj_consume_token(PUNTO);
   }
 
-//  Reglas auxiliares temporales
-  final public 
-void Io() throws ParseException {
+//  Reglas auxiliares 
+
+// Entrada/Salida
+  final public void Io() throws ParseException {Token t; int n;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case LEE:{
       jj_consume_token(LEE);
+      t = jj_consume_token(ID);
+genera_linea("lee " + t.image, true);
       break;
       }
     case MUESTRA:{
       jj_consume_token(MUESTRA);
+      n = ListaLiterales();
+genera_linea("print " + n, true);
       break;
       }
     default:
@@ -140,13 +143,15 @@ void Io() throws ParseException {
       jj_consume_token(-1);
       throw new ParseException();
     }
+  }
+
+//  cuántos literales hay en la lista
+  final public int ListaLiterales() throws ParseException {int n = 1;
+    Literal();
     label_2:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case COMA:
-      case ID:
-      case NUM:
-      case CAD:{
+      case COMA:{
         ;
         break;
         }
@@ -154,28 +159,36 @@ void Io() throws ParseException {
         jj_la1[3] = jj_gen;
         break label_2;
       }
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case ID:{
-        jj_consume_token(ID);
-        break;
-        }
-      case NUM:{
-        jj_consume_token(NUM);
-        break;
-        }
-      case CAD:{
-        jj_consume_token(CAD);
-        break;
-        }
-      case COMA:{
-        jj_consume_token(COMA);
-        break;
-        }
-      default:
-        jj_la1[4] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
+      jj_consume_token(COMA);
+      Literal();
+n++;
+    }
+{if ("" != null) return n;}
+    throw new Error("Missing return statement in function");
+  }
+
+// Un literal puede ser un identificador, un número o una cadena
+  final public void Literal() throws ParseException {Token t;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case ID:{
+      t = jj_consume_token(ID);
+genera_linea("valord " + t.image, true);
+      break;
       }
+    case NUM:{
+      t = jj_consume_token(NUM);
+genera_linea("mete " + t.image, true);
+      break;
+      }
+    case CAD:{
+      t = jj_consume_token(CAD);
+genera_linea("metecad " + t.image, true);
+      break;
+      }
+    default:
+      jj_la1[4] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
     }
   }
 
@@ -472,10 +485,10 @@ void Io() throws ParseException {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x800,0xad000,0x52000,0x52000,0x80000000,0x7e052000,0x7e052000,0x7e002000,0x7e002000,0x1000000,};
+      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x0,0xad000,0x52000,0x52000,0x80000000,0x7e052000,0x7e052000,0x7e002000,0x7e002000,0x1000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x2,0x2,0x0,0x700,0x700,0x0,0x3fc,0x3fc,0x2,0x301,0x301,0x300,0x300,0x0,};
+      jj_la1_1 = new int[] {0x2,0x2,0x0,0x0,0x700,0x0,0x3fc,0x3fc,0x2,0x301,0x301,0x300,0x300,0x0,};
    }
 
   /** Constructor with InputStream. */
