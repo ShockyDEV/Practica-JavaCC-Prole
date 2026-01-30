@@ -4,10 +4,28 @@
   import java.io.InputStream;
 
 public class practica2 implements practica2Constants {
-    public static void main(String args[]) throws ParseException {
+
+                // Buffer para ir guardando el código de pila generado 
+    StringBuilder outputBuffer = new StringBuilder();
+
+                // Contador para etiquetas
+                int labelCounter = 0;
+
+                String newLabel() {
+      return "LBL" + (labelCounter++);
+    }
+
+        void genera_linea(String linea, boolean conSangria) {
+      if (conSangria) {
+        outputBuffer.append("    " + linea + "\u005cn");
+      } else {
+        outputBuffer.append(linea + "\u005cn");
+      }
+    }
+
+         public static void main(String args[]) throws ParseException {
         practica2 parser;
         InputStream input;
-
         try {
           if (args.length == 0) {
               input = System.in;
@@ -16,6 +34,10 @@ public class practica2 implements practica2Constants {
           }
           parser = new practica2(input);
           parser.Axioma();
+
+                  System.out.print(parser.outputBuffer.toString());
+          System.out.println("Analisis realizado.");
+
           System.out.println("analisis lexico completado con exito");
         } catch (java.io.FileNotFoundException e) {
           System.err.println("error: archivo no encontrado");
@@ -34,6 +56,7 @@ public class practica2 implements practica2Constants {
     jj_consume_token(ID);
     jj_consume_token(PUNTO);
     jj_consume_token(INICIO);
+genera_linea("; - INFRAESTRUCTURA base  -", false);
     Sentencias();
     jj_consume_token(FIN);
     jj_consume_token(PUNTO);
@@ -96,6 +119,7 @@ public class practica2 implements practica2Constants {
       jj_consume_token(-1);
       throw new ParseException();
     }
+genera_linea("; Detectada sentencia en: " + newLabel(), true);
     jj_consume_token(PUNTO);
   }
 
