@@ -3,7 +3,7 @@
   import java.io.FileInputStream;
   import java.io.InputStream;
 
-  public class practica2 implements practica2Constants {
+public class practica2 implements practica2Constants {
     public static void main(String args[]) throws ParseException {
         practica2 parser;
         InputStream input;
@@ -16,14 +16,26 @@
           }
           parser = new practica2(input);
           parser.Axioma();
+          System.out.println("analisis lexico completado con exito");
         } catch (java.io.FileNotFoundException e) {
           System.err.println("error: archivo no encontrado");
         } catch (ParseException e) {
-          System.err.println("error de sintaxis");
+          System.err.println("error de sintaxis: " + e.getMessage());
+        } catch (TokenMgrError e) {
+          System.err.println("error lexico: " + e.getMessage());
         }
     }
 
+/* analizador sintactico */
+
+// Primera regla
   final public void Axioma() throws ParseException {
+    jj_consume_token(PROGRAMA);
+    jj_consume_token(ID);
+    jj_consume_token(PUNTO);
+    jj_consume_token(INICIO);
+    jj_consume_token(FIN);
+    jj_consume_token(PUNTO);
     jj_consume_token(0);
   }
 
@@ -154,7 +166,7 @@
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[5];
+    boolean[] la1tokens = new boolean[14];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -168,7 +180,7 @@
         }
       }
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 14; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

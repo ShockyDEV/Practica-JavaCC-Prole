@@ -8,6 +8,20 @@ public interface practica2Constants {
 
   /** End of File. */
   int EOF = 0;
+  /** RegularExpression Id. */
+  int PROGRAMA = 7;
+  /** RegularExpression Id. */
+  int INICIO = 8;
+  /** RegularExpression Id. */
+  int FIN = 9;
+  /** RegularExpression Id. */
+  int PUNTO = 10;
+  /** RegularExpression Id. */
+  int COMA = 11;
+  /** RegularExpression Id. */
+  int ID = 12;
+  /** RegularExpression Id. */
+  int NUM = 13;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -19,6 +33,15 @@ public interface practica2Constants {
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
+    "<token of kind 5>",
+    "<token of kind 6>",
+    "\"PROGRAM\"",
+    "\"BEGIN\"",
+    "\"END\"",
+    "\".\"",
+    "\",\"",
+    "<ID>",
+    "<NUM>",
   };
 
 }
