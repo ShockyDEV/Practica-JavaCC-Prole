@@ -192,267 +192,227 @@ genera_linea("metecad " + t.image, true);
     }
   }
 
-  final public void Asignar() throws ParseException {
+/*void Asignar() : {} { 
+  (<MUEVE> | <SUMA> | <RESTA> | <MULTIPLICA> | <DIVIDE>) 
+  ( <ID> | <NUM> | <PA> | <PC> | <MAS> | <MENOS> | <MULT> | <DIV> | <A> | <DE> | <POR> )* }*/
+  final public 
+void Asignar() throws ParseException {Token t_destino;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case MUEVE:{
       jj_consume_token(MUEVE);
+      Expr();
+      jj_consume_token(A);
+      t_destino = jj_consume_token(ID);
+genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
       break;
       }
     case SUMA:{
       jj_consume_token(SUMA);
+      Expr();
+      jj_consume_token(A);
+      t_destino = jj_consume_token(ID);
+genera_linea("valord " + t_destino.image, true);
+        genera_linea("add", true);
+        genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
       break;
       }
     case RESTA:{
       jj_consume_token(RESTA);
+      Expr();
+      jj_consume_token(DE);
+      t_destino = jj_consume_token(ID);
+genera_linea("valord " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("sub", true);
+        genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
       break;
       }
     case MULTIPLICA:{
       jj_consume_token(MULTIPLICA);
+      Expr();
+      jj_consume_token(POR);
+      Expr();
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case ID:{
+        jj_consume_token(ID);
+        break;
+        }
+      default:
+        jj_la1[5] = jj_gen;
+        ;
+      }
       break;
       }
     case DIVIDE:{
       jj_consume_token(DIVIDE);
-      break;
-      }
-    default:
-      jj_la1[5] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-    label_3:
-    while (true) {
+      Expr();
+      jj_consume_token(DE);
+      Expr();
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case A:
-      case DE:
-      case POR:
-      case MAS:
-      case MENOS:
-      case MULT:
-      case DIV:
-      case PA:
-      case PC:
-      case ID:
-      case NUM:{
-        ;
+      case ID:{
+        jj_consume_token(ID);
         break;
         }
       default:
         jj_la1[6] = jj_gen;
+        ;
+      }
+      break;
+      }
+    default:
+      jj_la1[7] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+// jerarquia matematica
+  final public 
+void Expr() throws ParseException {
+    Mult();
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case MAS:
+      case MENOS:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[8] = jj_gen;
         break label_3;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case ID:{
-        jj_consume_token(ID);
-        break;
-        }
-      case NUM:{
-        jj_consume_token(NUM);
-        break;
-        }
-      case PA:{
-        jj_consume_token(PA);
-        break;
-        }
-      case PC:{
-        jj_consume_token(PC);
-        break;
-        }
       case MAS:{
         jj_consume_token(MAS);
+        Mult();
+genera_linea("add", true);
         break;
         }
       case MENOS:{
         jj_consume_token(MENOS);
-        break;
-        }
-      case MULT:{
-        jj_consume_token(MULT);
-        break;
-        }
-      case DIV:{
-        jj_consume_token(DIV);
-        break;
-        }
-      case A:{
-        jj_consume_token(A);
-        break;
-        }
-      case DE:{
-        jj_consume_token(DE);
-        break;
-        }
-      case POR:{
-        jj_consume_token(POR);
-        break;
-        }
-      default:
-        jj_la1[7] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    }
-  }
-
-  final public void Bucle() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case VARYING:{
-      jj_consume_token(VARYING);
-      break;
-      }
-    case MIENTRAS:{
-      jj_consume_token(MIENTRAS);
-      break;
-      }
-    default:
-      jj_la1[8] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-    label_4:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case A:
-      case DE:
-      case POR:
-      case ES:
-      case NO:
-      case MAYOR:
-      case MENOR:
-      case QUE:
-      case IGUAL:
-      case HACER:
-      case ID:
-      case NUM:{
-        ;
+        Mult();
+genera_linea("sub", true);
         break;
         }
       default:
         jj_la1[9] = jj_gen;
-        break label_4;
-      }
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case ID:{
-        jj_consume_token(ID);
-        break;
-        }
-      case NUM:{
-        jj_consume_token(NUM);
-        break;
-        }
-      case A:{
-        jj_consume_token(A);
-        break;
-        }
-      case DE:{
-        jj_consume_token(DE);
-        break;
-        }
-      case POR:{
-        jj_consume_token(POR);
-        break;
-        }
-      case HACER:{
-        jj_consume_token(HACER);
-        break;
-        }
-      case ES:{
-        jj_consume_token(ES);
-        break;
-        }
-      case NO:{
-        jj_consume_token(NO);
-        break;
-        }
-      case MAYOR:{
-        jj_consume_token(MAYOR);
-        break;
-        }
-      case MENOR:{
-        jj_consume_token(MENOR);
-        break;
-        }
-      case QUE:{
-        jj_consume_token(QUE);
-        break;
-        }
-      case IGUAL:{
-        jj_consume_token(IGUAL);
-        break;
-        }
-      default:
-        jj_la1[10] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
     }
-    Sentencias();
-    jj_consume_token(FIN);
   }
 
-  final public void Comparar() throws ParseException {
-    jj_consume_token(SI);
-    label_5:
+  final public void Mult() throws ParseException {
+    Val();
+    label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case A:
-      case ES:
-      case NO:
-      case MAYOR:
-      case MENOR:
-      case QUE:
-      case IGUAL:
-      case ID:
-      case NUM:{
+      case MULT:
+      case DIV:{
         ;
         break;
         }
       default:
-        jj_la1[11] = jj_gen;
-        break label_5;
+        jj_la1[10] = jj_gen;
+        break label_4;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case ID:{
-        jj_consume_token(ID);
+      case MULT:{
+        jj_consume_token(MULT);
+        Val();
+genera_linea("mul", true);
         break;
         }
-      case NUM:{
-        jj_consume_token(NUM);
-        break;
-        }
-      case ES:{
-        jj_consume_token(ES);
-        break;
-        }
-      case NO:{
-        jj_consume_token(NO);
-        break;
-        }
-      case MAYOR:{
-        jj_consume_token(MAYOR);
-        break;
-        }
-      case MENOR:{
-        jj_consume_token(MENOR);
-        break;
-        }
-      case QUE:{
-        jj_consume_token(QUE);
-        break;
-        }
-      case IGUAL:{
-        jj_consume_token(IGUAL);
-        break;
-        }
-      case A:{
-        jj_consume_token(A);
+      case DIV:{
+        jj_consume_token(DIV);
+        Val();
+genera_linea("div", true);
         break;
         }
       default:
-        jj_la1[12] = jj_gen;
+        jj_la1[11] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
     }
+  }
+
+  final public void Val() throws ParseException {Token t;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case NUM:{
+      t = jj_consume_token(NUM);
+genera_linea("mete " + t.image, true);
+      break;
+      }
+    case ID:{
+      t = jj_consume_token(ID);
+genera_linea("valord " + t.image, true);
+      break;
+      }
+    case PA:{
+      jj_consume_token(PA);
+      Expr();
+      jj_consume_token(PC);
+      break;
+      }
+    default:
+      jj_la1[12] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+// estructuras de control
+  final public 
+void Bucle() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case MIENTRAS:{
+      jj_consume_token(MIENTRAS);
+      BooleanExpr();
+      jj_consume_token(HACER);
+      Sentencias();
+      jj_consume_token(FIN);
+      break;
+      }
+    case VARYING:{
+      jj_consume_token(VARYING);
+      jj_consume_token(ID);
+      jj_consume_token(DE);
+      Expr();
+      jj_consume_token(A);
+      Expr();
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case POR:{
+        jj_consume_token(POR);
+        Expr();
+        break;
+        }
+      default:
+        jj_la1[13] = jj_gen;
+        ;
+      }
+      jj_consume_token(HACER);
+      Sentencias();
+      jj_consume_token(FIN);
+      break;
+      }
+    default:
+      jj_la1[14] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void Comparar() throws ParseException {
+    jj_consume_token(SI);
+    BooleanExpr();
     jj_consume_token(ENTONCES);
     Sentencias();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -462,10 +422,56 @@ genera_linea("metecad " + t.image, true);
       break;
       }
     default:
-      jj_la1[13] = jj_gen;
+      jj_la1[15] = jj_gen;
       ;
     }
     jj_consume_token(FIN);
+  }
+
+// Regla diagrama booleanExpr
+  final public void BooleanExpr() throws ParseException {
+    Expr();
+    jj_consume_token(ES);
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case NO:{
+      jj_consume_token(NO);
+      break;
+      }
+    default:
+      jj_la1[16] = jj_gen;
+      ;
+    }
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case MAYOR:
+    case MENOR:{
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case MAYOR:{
+        jj_consume_token(MAYOR);
+        break;
+        }
+      case MENOR:{
+        jj_consume_token(MENOR);
+        break;
+        }
+      default:
+        jj_la1[17] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      jj_consume_token(QUE);
+      break;
+      }
+    case IGUAL:{
+      jj_consume_token(IGUAL);
+      jj_consume_token(A);
+      break;
+      }
+    default:
+      jj_la1[18] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    Expr();
   }
 
   /** Generated Token Manager. */
@@ -477,7 +483,7 @@ genera_linea("metecad " + t.image, true);
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[14];
+  final private int[] jj_la1 = new int[19];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -485,10 +491,10 @@ genera_linea("metecad " + t.image, true);
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x0,0xad000,0x52000,0x52000,0x80000000,0x7e052000,0x7e052000,0x7e002000,0x7e002000,0x1000000,};
+      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x0,0x0,0x0,0xad000,0x0,0x0,0x0,0x0,0x0,0x40000,0x80000000,0x1000000,0x4000000,0x18000000,0x58000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x2,0x2,0x0,0x0,0x700,0x0,0x3fc,0x3fc,0x2,0x301,0x301,0x300,0x300,0x0,};
+      jj_la1_1 = new int[] {0x2,0x2,0x0,0x0,0x700,0x100,0x100,0x0,0xc,0xc,0x30,0x30,0x340,0x0,0x2,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -502,7 +508,7 @@ genera_linea("metecad " + t.image, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -516,7 +522,7 @@ genera_linea("metecad " + t.image, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -526,7 +532,7 @@ genera_linea("metecad " + t.image, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -536,7 +542,7 @@ genera_linea("metecad " + t.image, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -545,7 +551,7 @@ genera_linea("metecad " + t.image, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -554,7 +560,7 @@ genera_linea("metecad " + t.image, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -610,7 +616,7 @@ genera_linea("metecad " + t.image, true);
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 14; i++) {
+    for (int i = 0; i < 19; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

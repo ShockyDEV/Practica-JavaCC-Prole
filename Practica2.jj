@@ -200,16 +200,79 @@ void Literal() :
       { genera_linea("metecad " + t.image, true); }
 }
 
-void Asignar() : {} { 
+/*void Asignar() : {} { 
   (<MUEVE> | <SUMA> | <RESTA> | <MULTIPLICA> | <DIVIDE>) 
-  ( <ID> | <NUM> | <PA> | <PC> | <MAS> | <MENOS> | <MULT> | <DIV> | <A> | <DE> | <POR> )* }
+  ( <ID> | <NUM> | <PA> | <PC> | <MAS> | <MENOS> | <MULT> | <DIV> | <A> | <DE> | <POR> )* }*/
+  
+void Asignar() :
+{ Token t_destino; }
+{
+    ( <MUEVE> Expr() <A> t_destino = <ID>
+      {
+        genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
+      }
+    )
+  | ( <SUMA> Expr() <A> t_destino = <ID>
+      {
+        genera_linea("valord " + t_destino.image, true);
+        genera_linea("add", true);
+        genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
+      }
+    )
+  | ( <RESTA> Expr() <DE> t_destino = <ID>
+      {
+        genera_linea("valord " + t_destino.image, true);
+        genera_linea("swap", true); 
+        genera_linea("sub", true);
+        genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
+      }
+    )
+    // Añadimos temporalmente MULTIPLY y DIVIDE para evitar errores
+  | ( <MULTIPLICA> Expr() <POR> Expr() ( <ID> )? ) 
+  | ( <DIVIDE> Expr() <DE> Expr() ( <ID> )? )
+}
 
-void Bucle() : {} { 
-  (<VARYING> | <MIENTRAS>) 
-  ( <ID> | <NUM> | <A> | <DE> | <POR> | <HACER> | <ES> | <NO> | <MAYOR> | <MENOR> | <QUE> | <IGUAL> )* Sentencias() <FIN> 
+// jerarquia matematica
+
+void Expr() : {} {
+  Mult() ( <MAS> Mult() { genera_linea("add", true); } 
+         | <MENOS> Mult() { genera_linea("sub", true); } )*
+}
+
+void Mult() : {} {
+  Val() ( <MULT> Val() { genera_linea("mul", true); } 
+        | <DIV> Val() { genera_linea("div", true); } )*
+}
+
+void Val() : { Token t; } {
+    t = <NUM> { genera_linea("mete " + t.image, true); } 
+  | t = <ID>  { genera_linea("valord " + t.image, true); }
+  | <PA> Expr() <PC> 
+}
+
+// estructuras de control
+
+void Bucle() : {} {
+  ( <MIENTRAS> BooleanExpr() <HACER> Sentencias() <FIN> )
+| ( <VARYING> <ID> <DE> Expr() <A> Expr() ( <POR> Expr() )? <HACER> Sentencias() <FIN> )
 }
 
 void Comparar() : {} { 
-  <SI> 
-  ( <ID> | <NUM> | <ES> | <NO> | <MAYOR> | <MENOR> | <QUE> | <IGUAL> | <A> )* <ENTONCES> Sentencias() ( <SINO> Sentencias() )? <FIN> 
+  <SI> BooleanExpr() <ENTONCES> Sentencias() ( <SINO> Sentencias() )? <FIN> 
+}
+
+// Regla diagrama booleanExpr
+void BooleanExpr() : {} {
+  Expr() <ES> ( <NO> )? 
+  ( 
+      ( <MAYOR> | <MENOR> ) <QUE> // GREATER THAN / LESS THAN
+    | <IGUAL> <A>                 // EQUAL TO
+  ) 
+  Expr()
 }
