@@ -1,0 +1,43 @@
+/*
+ * La secuencia de comandos necesaria para obtener el ejecutable es:
+ *     javacc test1.jj 
+ *     javac *.java 
+ *     java -cp . test 
+ */
+
+options {
+  STATIC = false;
+}
+
+PARSER_BEGIN(practica2)
+  import java.io.FileInputStream;
+  import java.io.InputStream;
+
+  public class practica2 {
+    public static void main(String args[]) throws ParseException {
+        practica2 parser;
+        InputStream input;
+
+        try {
+          if (args.length == 0) {
+              input = System.in;
+          } else {
+              input = new FileInputStream(args[0]);
+          }
+          parser = new practica2(input);
+          parser.Axioma(); 
+        } catch (java.io.FileNotFoundException e) {
+          System.err.println("error: archivo no encontrado");
+        } catch (ParseException e) {
+          System.err.println("error de sintaxis");
+        }
+    }
+  }
+PARSER_END(practica2)
+
+SKIP : { " " | "\t" | "\n" | "\r" }
+
+void Axioma() : {}
+{
+  <EOF> 
+}
