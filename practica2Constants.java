@@ -19,9 +19,67 @@ public interface practica2Constants {
   /** RegularExpression Id. */
   int COMA = 11;
   /** RegularExpression Id. */
-  int ID = 12;
+  int MUEVE = 12;
   /** RegularExpression Id. */
-  int NUM = 13;
+  int A = 13;
+  /** RegularExpression Id. */
+  int SUMA = 14;
+  /** RegularExpression Id. */
+  int RESTA = 15;
+  /** RegularExpression Id. */
+  int DE = 16;
+  /** RegularExpression Id. */
+  int MULTIPLICA = 17;
+  /** RegularExpression Id. */
+  int POR = 18;
+  /** RegularExpression Id. */
+  int DIVIDE = 19;
+  /** RegularExpression Id. */
+  int LEE = 20;
+  /** RegularExpression Id. */
+  int MUESTRA = 21;
+  /** RegularExpression Id. */
+  int SI = 22;
+  /** RegularExpression Id. */
+  int ENTONCES = 23;
+  /** RegularExpression Id. */
+  int SINO = 24;
+  /** RegularExpression Id. */
+  int ES = 25;
+  /** RegularExpression Id. */
+  int NO = 26;
+  /** RegularExpression Id. */
+  int MAYOR = 27;
+  /** RegularExpression Id. */
+  int MENOR = 28;
+  /** RegularExpression Id. */
+  int QUE = 29;
+  /** RegularExpression Id. */
+  int IGUAL = 30;
+  /** RegularExpression Id. */
+  int MIENTRAS = 31;
+  /** RegularExpression Id. */
+  int HACER = 32;
+  /** RegularExpression Id. */
+  int VARYING = 33;
+  /** RegularExpression Id. */
+  int MAS = 34;
+  /** RegularExpression Id. */
+  int MENOS = 35;
+  /** RegularExpression Id. */
+  int MULT = 36;
+  /** RegularExpression Id. */
+  int DIV = 37;
+  /** RegularExpression Id. */
+  int PA = 38;
+  /** RegularExpression Id. */
+  int PC = 39;
+  /** RegularExpression Id. */
+  int ID = 40;
+  /** RegularExpression Id. */
+  int NUM = 41;
+  /** RegularExpression Id. */
+  int CAD = 42;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -40,8 +98,37 @@ public interface practica2Constants {
     "\"END\"",
     "\".\"",
     "\",\"",
+    "\"MOVE\"",
+    "\"TO\"",
+    "\"ADD\"",
+    "\"SUBTRACT\"",
+    "\"FROM\"",
+    "\"MULTIPLY\"",
+    "\"BY\"",
+    "\"DIVIDE\"",
+    "\"ACCEPT\"",
+    "\"DISPLAY\"",
+    "\"IF\"",
+    "\"THEN\"",
+    "\"ELSE\"",
+    "\"IS\"",
+    "\"NOT\"",
+    "\"GREATER\"",
+    "\"LESS\"",
+    "\"THAN\"",
+    "\"EQUAL\"",
+    "\"WHILE\"",
+    "\"DO\"",
+    "\"VARYING\"",
+    "\"+\"",
+    "\"-\"",
+    "\"*\"",
+    "\"/\"",
+    "\"(\"",
+    "\")\"",
     "<ID>",
     "<NUM>",
+    "<CAD>",
   };
 
 }

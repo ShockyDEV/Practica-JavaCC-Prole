@@ -34,9 +34,401 @@ public class practica2 implements practica2Constants {
     jj_consume_token(ID);
     jj_consume_token(PUNTO);
     jj_consume_token(INICIO);
+    Sentencias();
     jj_consume_token(FIN);
     jj_consume_token(PUNTO);
     jj_consume_token(0);
+  }
+
+// Distribuidor de verbos
+  final public void Sentencias() throws ParseException {
+    label_1:
+    while (true) {
+      Sentencia();
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case MUEVE:
+      case SUMA:
+      case RESTA:
+      case MULTIPLICA:
+      case DIVIDE:
+      case LEE:
+      case MUESTRA:
+      case SI:
+      case MIENTRAS:
+      case VARYING:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[0] = jj_gen;
+        break label_1;
+      }
+    }
+  }
+
+// Distribuidor de verbos (singular) 
+  final public void Sentencia() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case LEE:
+    case MUESTRA:{
+      Io();
+      break;
+      }
+    case MUEVE:
+    case SUMA:
+    case RESTA:
+    case MULTIPLICA:
+    case DIVIDE:{
+      Asignar();
+      break;
+      }
+    case MIENTRAS:
+    case VARYING:{
+      Bucle();
+      break;
+      }
+    case SI:{
+      Comparar();
+      break;
+      }
+    default:
+      jj_la1[1] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    jj_consume_token(PUNTO);
+  }
+
+//  Reglas auxiliares temporales
+  final public 
+void Io() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case LEE:{
+      jj_consume_token(LEE);
+      break;
+      }
+    case MUESTRA:{
+      jj_consume_token(MUESTRA);
+      break;
+      }
+    default:
+      jj_la1[2] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    label_2:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case COMA:
+      case ID:
+      case NUM:
+      case CAD:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[3] = jj_gen;
+        break label_2;
+      }
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case ID:{
+        jj_consume_token(ID);
+        break;
+        }
+      case NUM:{
+        jj_consume_token(NUM);
+        break;
+        }
+      case CAD:{
+        jj_consume_token(CAD);
+        break;
+        }
+      case COMA:{
+        jj_consume_token(COMA);
+        break;
+        }
+      default:
+        jj_la1[4] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+  }
+
+  final public void Asignar() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case MUEVE:{
+      jj_consume_token(MUEVE);
+      break;
+      }
+    case SUMA:{
+      jj_consume_token(SUMA);
+      break;
+      }
+    case RESTA:{
+      jj_consume_token(RESTA);
+      break;
+      }
+    case MULTIPLICA:{
+      jj_consume_token(MULTIPLICA);
+      break;
+      }
+    case DIVIDE:{
+      jj_consume_token(DIVIDE);
+      break;
+      }
+    default:
+      jj_la1[5] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case A:
+      case DE:
+      case POR:
+      case MAS:
+      case MENOS:
+      case MULT:
+      case DIV:
+      case PA:
+      case PC:
+      case ID:
+      case NUM:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[6] = jj_gen;
+        break label_3;
+      }
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case ID:{
+        jj_consume_token(ID);
+        break;
+        }
+      case NUM:{
+        jj_consume_token(NUM);
+        break;
+        }
+      case PA:{
+        jj_consume_token(PA);
+        break;
+        }
+      case PC:{
+        jj_consume_token(PC);
+        break;
+        }
+      case MAS:{
+        jj_consume_token(MAS);
+        break;
+        }
+      case MENOS:{
+        jj_consume_token(MENOS);
+        break;
+        }
+      case MULT:{
+        jj_consume_token(MULT);
+        break;
+        }
+      case DIV:{
+        jj_consume_token(DIV);
+        break;
+        }
+      case A:{
+        jj_consume_token(A);
+        break;
+        }
+      case DE:{
+        jj_consume_token(DE);
+        break;
+        }
+      case POR:{
+        jj_consume_token(POR);
+        break;
+        }
+      default:
+        jj_la1[7] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+  }
+
+  final public void Bucle() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case VARYING:{
+      jj_consume_token(VARYING);
+      break;
+      }
+    case MIENTRAS:{
+      jj_consume_token(MIENTRAS);
+      break;
+      }
+    default:
+      jj_la1[8] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    label_4:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case A:
+      case DE:
+      case POR:
+      case ES:
+      case NO:
+      case MAYOR:
+      case MENOR:
+      case QUE:
+      case IGUAL:
+      case HACER:
+      case ID:
+      case NUM:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[9] = jj_gen;
+        break label_4;
+      }
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case ID:{
+        jj_consume_token(ID);
+        break;
+        }
+      case NUM:{
+        jj_consume_token(NUM);
+        break;
+        }
+      case A:{
+        jj_consume_token(A);
+        break;
+        }
+      case DE:{
+        jj_consume_token(DE);
+        break;
+        }
+      case POR:{
+        jj_consume_token(POR);
+        break;
+        }
+      case HACER:{
+        jj_consume_token(HACER);
+        break;
+        }
+      case ES:{
+        jj_consume_token(ES);
+        break;
+        }
+      case NO:{
+        jj_consume_token(NO);
+        break;
+        }
+      case MAYOR:{
+        jj_consume_token(MAYOR);
+        break;
+        }
+      case MENOR:{
+        jj_consume_token(MENOR);
+        break;
+        }
+      case QUE:{
+        jj_consume_token(QUE);
+        break;
+        }
+      case IGUAL:{
+        jj_consume_token(IGUAL);
+        break;
+        }
+      default:
+        jj_la1[10] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+    Sentencias();
+    jj_consume_token(FIN);
+  }
+
+  final public void Comparar() throws ParseException {
+    jj_consume_token(SI);
+    label_5:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case A:
+      case ES:
+      case NO:
+      case MAYOR:
+      case MENOR:
+      case QUE:
+      case IGUAL:
+      case ID:
+      case NUM:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[11] = jj_gen;
+        break label_5;
+      }
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case ID:{
+        jj_consume_token(ID);
+        break;
+        }
+      case NUM:{
+        jj_consume_token(NUM);
+        break;
+        }
+      case ES:{
+        jj_consume_token(ES);
+        break;
+        }
+      case NO:{
+        jj_consume_token(NO);
+        break;
+        }
+      case MAYOR:{
+        jj_consume_token(MAYOR);
+        break;
+        }
+      case MENOR:{
+        jj_consume_token(MENOR);
+        break;
+        }
+      case QUE:{
+        jj_consume_token(QUE);
+        break;
+        }
+      case IGUAL:{
+        jj_consume_token(IGUAL);
+        break;
+        }
+      case A:{
+        jj_consume_token(A);
+        break;
+        }
+      default:
+        jj_la1[12] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    }
+    jj_consume_token(ENTONCES);
+    Sentencias();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case SINO:{
+      jj_consume_token(SINO);
+      Sentencias();
+      break;
+      }
+    default:
+      jj_la1[13] = jj_gen;
+      ;
+    }
+    jj_consume_token(FIN);
   }
 
   /** Generated Token Manager. */
@@ -48,13 +440,18 @@ public class practica2 implements practica2Constants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[0];
+  final private int[] jj_la1 = new int[14];
   static private int[] jj_la1_0;
+  static private int[] jj_la1_1;
   static {
       jj_la1_init_0();
+      jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {};
+      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x800,0xad000,0x52000,0x52000,0x80000000,0x7e052000,0x7e052000,0x7e002000,0x7e002000,0x1000000,};
+   }
+   private static void jj_la1_init_1() {
+      jj_la1_1 = new int[] {0x2,0x2,0x0,0x700,0x700,0x0,0x3fc,0x3fc,0x2,0x301,0x301,0x300,0x300,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -68,6 +465,7 @@ public class practica2 implements practica2Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -81,7 +479,7 @@ public class practica2 implements practica2Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 0; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -91,6 +489,7 @@ public class practica2 implements practica2Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -100,6 +499,7 @@ public class practica2 implements practica2Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -108,6 +508,7 @@ public class practica2 implements practica2Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -116,6 +517,7 @@ public class practica2 implements practica2Constants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -166,21 +568,24 @@ public class practica2 implements practica2Constants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[14];
+    boolean[] la1tokens = new boolean[43];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 0; i++) {
+    for (int i = 0; i < 14; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
             la1tokens[j] = true;
           }
+          if ((jj_la1_1[i] & (1<<j)) != 0) {
+            la1tokens[32+j] = true;
+          }
         }
       }
     }
-    for (int i = 0; i < 14; i++) {
+    for (int i = 0; i < 43; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

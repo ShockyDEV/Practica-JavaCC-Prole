@@ -55,18 +55,55 @@ SKIP :
 /* TOKEN: Estas son válidas para nuestro lenguaje.
   Si no lo tenemos aquí o en SKIP dará error. */
   
-  TOKEN : 
+	TOKEN : 
 {
-  // Palabras Reservadas (Program)
+  // estructura del programa 
     < PROGRAMA: "PROGRAM" >
   | < INICIO: "BEGIN" >
   | < FIN: "END" >
   | < PUNTO: "." >
   | < COMA: "," >
 
-  // Datos
+  // verbos y asignación 
+  | < MUEVE: "MOVE" >
+  | < A: "TO" >
+  | < SUMA: "ADD" >
+  | < RESTA: "SUBTRACT" >
+  | < DE: "FROM" >
+  | < MULTIPLICA: "MULTIPLY" >
+  | < POR: "BY" >
+  | < DIVIDE: "DIVIDE" >
+  | < LEE: "ACCEPT" >
+  | < MUESTRA: "DISPLAY" >
+
+  // condicionales y comparacion 
+  | < SI: "IF" >
+  | < ENTONCES: "THEN" >
+  | < SINO: "ELSE" >
+  | < ES: "IS" >
+  | < NO: "NOT" >
+  | < MAYOR: "GREATER" >
+  | < MENOR: "LESS" >
+  | < QUE: "THAN" >
+  | < IGUAL: "EQUAL" >
+
+  // bucles 
+  | < MIENTRAS: "WHILE" >
+  | < HACER: "DO" >
+  | < VARYING: "VARYING" >
+
+  // operadores y paréntesis 
+  | < MAS: "+" >
+  | < MENOS: "-" >
+  | < MULT: "*" >
+  | < DIV: "/" >
+  | < PA: "(" >
+  | < PC: ")" >
+
+  // datos
   | < ID: ["A"-"Z"] (["A"-"Z","0"-"9"])* ( "-" (["A"-"Z","0"-"9"])+ )* >
-  | < NUM: (["0"-"9"])+ >
+  | < NUM: (["0"-"9"])+ ( "." (["0"-"9"])+ )? ( ["e","E"] (["+","-"])? (["0"-"9"])+ )? >
+  | < CAD: "\"" (~["\"","\n","\r"])* "\"" | "'" (~["'","\n","\r"])* "'" >
 }
 
 /* analizador sintactico */ 
@@ -77,6 +114,46 @@ void Axioma() :
 {
   <PROGRAMA> <ID> <PUNTO>
   <INICIO>
+  Sentencias()
   <FIN> <PUNTO>
   <EOF>
+}
+
+// Distribuidor de verbos
+void Sentencias() :
+{}
+{
+  ( Sentencia() )+
+}
+
+// Distribuidor de verbos (singular) 
+void Sentencia() :
+{}
+{
+  (
+      Io() 
+    | Asignar()
+    | Bucle()
+    | Comparar()
+  )
+  <PUNTO>
+}
+
+//  Reglas auxiliares temporales
+
+void Io() : {} { 
+  (<LEE> | <MUESTRA>) ( <ID> | <NUM> | <CAD> | <COMA> )* }
+
+void Asignar() : {} { 
+  (<MUEVE> | <SUMA> | <RESTA> | <MULTIPLICA> | <DIVIDE>) 
+  ( <ID> | <NUM> | <PA> | <PC> | <MAS> | <MENOS> | <MULT> | <DIV> | <A> | <DE> | <POR> )* }
+
+void Bucle() : {} { 
+  (<VARYING> | <MIENTRAS>) 
+  ( <ID> | <NUM> | <A> | <DE> | <POR> | <HACER> | <ES> | <NO> | <MAYOR> | <MENOR> | <QUE> | <IGUAL> )* Sentencias() <FIN> 
+}
+
+void Comparar() : {} { 
+  <SI> 
+  ( <ID> | <NUM> | <ES> | <NO> | <MAYOR> | <MENOR> | <QUE> | <IGUAL> | <A> )* <ENTONCES> Sentencias() ( <SINO> Sentencias() )? <FIN> 
 }
