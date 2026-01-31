@@ -258,13 +258,93 @@ void Val() : { Token t; } {
 
 // estructuras de control
 
-void Bucle() : {} {
-  ( <MIENTRAS> BooleanExpr() <HACER> Sentencias() <FIN> )
-| ( <VARYING> <ID> <DE> Expr() <A> Expr() ( <POR> Expr() )? <HACER> Sentencias() <FIN> )
+// Estructura condicional IF-THEN-ELSE-END
+
+void Comparar() :
+{ String lbl_else, lbl_fin = null; } // Inicializamos para saber si hay SINO
+{
+    <SI> BooleanExpr() 
+    {
+        lbl_else = newLabel();
+        genera_linea("sifalsovea " + lbl_else, true);
+    }
+    <ENTONCES> Sentencias()
+    ( 
+        <SINO> 
+        { 
+            lbl_fin = newLabel(); 
+            genera_linea("vea " + lbl_fin, true); 
+            genera_linea(lbl_else + ":", false); 
+        }
+        Sentencias() 
+    )?
+    <FIN>
+    {
+        // Si hubo SINO, ponemos la etiqueta final. Si no, cerramos con la del ELSE.
+        if (lbl_fin != null) {
+            genera_linea(lbl_fin + ":", false);
+        } else {
+            genera_linea(lbl_else + ":", false);
+        }
+    }
 }
 
-void Comparar() : {} { 
-  <SI> BooleanExpr() <ENTONCES> Sentencias() ( <SINO> Sentencias() )? <FIN> 
+// Bucle WHILE 
+void Bucle() :
+{ String lbl_inicio, lbl_fin; Token t_var; }
+{
+    ( //  WHILE 
+      <MIENTRAS> 
+      { 
+        lbl_inicio = newLabel(); 
+        lbl_fin = newLabel();
+        genera_linea(lbl_inicio + ":", false); 
+      }
+      BooleanExpr() 
+      { genera_linea("sifalsovea " + lbl_fin, true); }
+      <HACER> Sentencias() 
+      <FIN>
+      { 
+        genera_linea("vea " + lbl_inicio, true); 
+        genera_linea(lbl_fin + ":", false); 
+      }
+    )
+  | ( //  VARYING 
+      <VARYING> t_var = <ID> 
+      <DE> Expr() // Valor inicial
+      {
+        // Inicializamos la variable: ID = Valor Inicial
+        genera_linea("valori " + t_var.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
+        
+        lbl_inicio = newLabel();
+        lbl_fin = newLabel();
+        genera_linea(lbl_inicio + ":", false);
+      }
+      <A> Expr() // Valor límite
+      {
+        // Comparamos: (Variable - Límite) > 0 ?
+        genera_linea("valord " + t_var.image, true);
+        genera_linea("swap", true);
+        genera_linea("sub", true);
+        genera_linea("sifalsovea " + lbl_fin, true);
+      }
+      ( <POR> Expr() )? // Incremento 
+      <HACER> Sentencias()
+      <FIN>
+      {
+        // Incrementamos la variable (ID = ID + 1 por ahora)
+        genera_linea("valori " + t_var.image, true);
+        genera_linea("valord " + t_var.image, true);
+        genera_linea("mete 1", true); 
+        genera_linea("add", true);
+        genera_linea("asigna", true);
+        
+        genera_linea("vea " + lbl_inicio, true);
+        genera_linea(lbl_fin + ":", false);
+      }
+    )
 }
 
 // Regla diagrama booleanExpr

@@ -370,24 +370,75 @@ genera_linea("valord " + t.image, true);
   }
 
 // estructuras de control
+
+// Estructura condicional IF-THEN-ELSE-END
   final public 
-void Bucle() throws ParseException {
+void Comparar() throws ParseException {String lbl_else, lbl_fin = null;
+    jj_consume_token(SI);
+    BooleanExpr();
+lbl_else = newLabel();
+        genera_linea("sifalsovea " + lbl_else, true);
+    jj_consume_token(ENTONCES);
+    Sentencias();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case SINO:{
+      jj_consume_token(SINO);
+lbl_fin = newLabel();
+            genera_linea("vea " + lbl_fin, true);
+            genera_linea(lbl_else + ":", false);
+      Sentencias();
+      break;
+      }
+    default:
+      jj_la1[13] = jj_gen;
+      ;
+    }
+    jj_consume_token(FIN);
+// Si hubo SINO, ponemos la etiqueta final. Si no, cerramos con la del ELSE.
+        if (lbl_fin != null) {
+            genera_linea(lbl_fin + ":", false);
+        } else {
+            genera_linea(lbl_else + ":", false);
+        }
+  }
+
+// Bucle WHILE 
+  final public void Bucle() throws ParseException {String lbl_inicio, lbl_fin; Token t_var;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case MIENTRAS:{
       jj_consume_token(MIENTRAS);
+lbl_inicio = newLabel();
+        lbl_fin = newLabel();
+        genera_linea(lbl_inicio + ":", false);
       BooleanExpr();
+genera_linea("sifalsovea " + lbl_fin, true);
       jj_consume_token(HACER);
       Sentencias();
       jj_consume_token(FIN);
+genera_linea("vea " + lbl_inicio, true);
+        genera_linea(lbl_fin + ":", false);
       break;
       }
     case VARYING:{
       jj_consume_token(VARYING);
-      jj_consume_token(ID);
+      t_var = jj_consume_token(ID);
       jj_consume_token(DE);
       Expr();
+// Inicializamos la variable: ID = Valor Inicial
+        genera_linea("valori " + t_var.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
+
+        lbl_inicio = newLabel();
+        lbl_fin = newLabel();
+        genera_linea(lbl_inicio + ":", false);
       jj_consume_token(A);
       Expr();
+// Comparamos: (Variable - Límite) > 0 ?
+        genera_linea("valord " + t_var.image, true);
+        genera_linea("swap", true);
+        genera_linea("sub", true);
+        genera_linea("sifalsovea " + lbl_fin, true);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case POR:{
         jj_consume_token(POR);
@@ -395,37 +446,28 @@ void Bucle() throws ParseException {
         break;
         }
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[14] = jj_gen;
         ;
       }
       jj_consume_token(HACER);
       Sentencias();
       jj_consume_token(FIN);
-      break;
-      }
-    default:
-      jj_la1[14] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-  }
+// Incrementamos la variable (ID = ID + 1 por ahora para simplificar)
+        genera_linea("valori " + t_var.image, true);
+        genera_linea("valord " + t_var.image, true);
+        genera_linea("mete 1", true);
+        genera_linea("add", true);
+        genera_linea("asigna", true);
 
-  final public void Comparar() throws ParseException {
-    jj_consume_token(SI);
-    BooleanExpr();
-    jj_consume_token(ENTONCES);
-    Sentencias();
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case SINO:{
-      jj_consume_token(SINO);
-      Sentencias();
+        genera_linea("vea " + lbl_inicio, true);
+        genera_linea(lbl_fin + ":", false);
       break;
       }
     default:
       jj_la1[15] = jj_gen;
-      ;
+      jj_consume_token(-1);
+      throw new ParseException();
     }
-    jj_consume_token(FIN);
   }
 
 // Regla diagrama booleanExpr
@@ -491,10 +533,10 @@ void Bucle() throws ParseException {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x0,0x0,0x0,0xad000,0x0,0x0,0x0,0x0,0x0,0x40000,0x80000000,0x1000000,0x4000000,0x18000000,0x58000000,};
+      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x0,0x0,0x0,0xad000,0x0,0x0,0x0,0x0,0x0,0x1000000,0x40000,0x80000000,0x4000000,0x18000000,0x58000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x2,0x2,0x0,0x0,0x700,0x100,0x100,0x0,0xc,0xc,0x30,0x30,0x340,0x0,0x2,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x2,0x2,0x0,0x0,0x700,0x100,0x100,0x0,0xc,0xc,0x30,0x30,0x340,0x0,0x0,0x2,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
