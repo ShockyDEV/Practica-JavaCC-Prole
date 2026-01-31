@@ -63,23 +63,27 @@ public interface practica2Constants {
   /** RegularExpression Id. */
   int VARYING = 33;
   /** RegularExpression Id. */
-  int MAS = 34;
+  int DANDO = 34;
   /** RegularExpression Id. */
-  int MENOS = 35;
+  int ENTRE = 35;
   /** RegularExpression Id. */
-  int MULT = 36;
+  int MAS = 36;
   /** RegularExpression Id. */
-  int DIV = 37;
+  int MENOS = 37;
   /** RegularExpression Id. */
-  int PA = 38;
+  int MULT = 38;
   /** RegularExpression Id. */
-  int PC = 39;
+  int DIV = 39;
   /** RegularExpression Id. */
-  int ID = 40;
+  int PA = 40;
   /** RegularExpression Id. */
-  int NUM = 41;
+  int PC = 41;
   /** RegularExpression Id. */
-  int CAD = 42;
+  int ID = 42;
+  /** RegularExpression Id. */
+  int NUM = 43;
+  /** RegularExpression Id. */
+  int CAD = 44;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -120,6 +124,8 @@ public interface practica2Constants {
     "\"WHILE\"",
     "\"DO\"",
     "\"VARYING\"",
+    "\"GIVING\"",
+    "\"INTO\"",
     "\"+\"",
     "\"-\"",
     "\"*\"",

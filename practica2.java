@@ -36,9 +36,8 @@ public class practica2 implements practica2Constants {
           parser.Axioma();
 
                   System.out.print(parser.outputBuffer.toString());
-          System.out.println("Analisis realizado.");
 
-          System.out.println("analisis lexico completado con exito");
+          System.out.println("analisis lexico completado");
         } catch (java.io.FileNotFoundException e) {
           System.err.println("error: archivo no encontrado");
         } catch (ParseException e) {
@@ -192,20 +191,14 @@ genera_linea("metecad " + t.image, true);
     }
   }
 
-/*void Asignar() : {} { 
-  (<MUEVE> | <SUMA> | <RESTA> | <MULTIPLICA> | <DIVIDE>) 
-  ( <ID> | <NUM> | <PA> | <PC> | <MAS> | <MENOS> | <MULT> | <DIV> | <A> | <DE> | <POR> )* }*/
-  final public 
-void Asignar() throws ParseException {Token t_destino;
+  final public void Asignar() throws ParseException {Token t_destino;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case MUEVE:{
       jj_consume_token(MUEVE);
       Expr();
       jj_consume_token(A);
       t_destino = jj_consume_token(ID);
-genera_linea("valori " + t_destino.image, true);
-        genera_linea("swap", true);
-        genera_linea("asigna", true);
+genera_linea("valori " + t_destino.image, true); genera_linea("swap", true); genera_linea("asigna", true);
       break;
       }
     case SUMA:{
@@ -213,11 +206,8 @@ genera_linea("valori " + t_destino.image, true);
       Expr();
       jj_consume_token(A);
       t_destino = jj_consume_token(ID);
-genera_linea("valord " + t_destino.image, true);
-        genera_linea("add", true);
-        genera_linea("valori " + t_destino.image, true);
-        genera_linea("swap", true);
-        genera_linea("asigna", true);
+genera_linea("valord " + t_destino.image, true); genera_linea("add", true);
+        genera_linea("valori " + t_destino.image, true); genera_linea("swap", true); genera_linea("asigna", true);
       break;
       }
     case RESTA:{
@@ -225,12 +215,8 @@ genera_linea("valord " + t_destino.image, true);
       Expr();
       jj_consume_token(DE);
       t_destino = jj_consume_token(ID);
-genera_linea("valord " + t_destino.image, true);
-        genera_linea("swap", true);
-        genera_linea("sub", true);
-        genera_linea("valori " + t_destino.image, true);
-        genera_linea("swap", true);
-        genera_linea("asigna", true);
+genera_linea("valord " + t_destino.image, true); genera_linea("swap", true); genera_linea("sub", true);
+        genera_linea("valori " + t_destino.image, true); genera_linea("swap", true); genera_linea("asigna", true);
       break;
       }
     case MULTIPLICA:{
@@ -238,35 +224,29 @@ genera_linea("valord " + t_destino.image, true);
       Expr();
       jj_consume_token(POR);
       Expr();
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case ID:{
-        jj_consume_token(ID);
-        break;
-        }
-      default:
-        jj_la1[5] = jj_gen;
-        ;
-      }
+      jj_consume_token(DANDO);
+      t_destino = jj_consume_token(ID);
+genera_linea("mul", true);
+        genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
       break;
       }
     case DIVIDE:{
       jj_consume_token(DIVIDE);
       Expr();
-      jj_consume_token(DE);
+      jj_consume_token(ENTRE);
       Expr();
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case ID:{
-        jj_consume_token(ID);
-        break;
-        }
-      default:
-        jj_la1[6] = jj_gen;
-        ;
-      }
+      jj_consume_token(DANDO);
+      t_destino = jj_consume_token(ID);
+genera_linea("div", true);
+        genera_linea("valori " + t_destino.image, true);
+        genera_linea("swap", true);
+        genera_linea("asigna", true);
       break;
       }
     default:
-      jj_la1[7] = jj_gen;
+      jj_la1[5] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -285,7 +265,7 @@ void Expr() throws ParseException {
         break;
         }
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[6] = jj_gen;
         break label_3;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -302,7 +282,7 @@ genera_linea("sub", true);
         break;
         }
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[7] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -320,7 +300,7 @@ genera_linea("sub", true);
         break;
         }
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[8] = jj_gen;
         break label_4;
       }
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -337,7 +317,7 @@ genera_linea("div", true);
         break;
         }
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[9] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -363,7 +343,7 @@ genera_linea("valord " + t.image, true);
       break;
       }
     default:
-      jj_la1[12] = jj_gen;
+      jj_la1[10] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -390,7 +370,7 @@ lbl_fin = newLabel();
       break;
       }
     default:
-      jj_la1[13] = jj_gen;
+      jj_la1[11] = jj_gen;
       ;
     }
     jj_consume_token(FIN);
@@ -424,8 +404,7 @@ genera_linea("vea " + lbl_inicio, true);
       t_var = jj_consume_token(ID);
       jj_consume_token(DE);
       Expr();
-// Inicializamos la variable: ID = Valor Inicial
-        genera_linea("valori " + t_var.image, true);
+genera_linea("valori " + t_var.image, true);
         genera_linea("swap", true);
         genera_linea("asigna", true);
 
@@ -434,8 +413,7 @@ genera_linea("vea " + lbl_inicio, true);
         genera_linea(lbl_inicio + ":", false);
       jj_consume_token(A);
       Expr();
-// Comparamos: (Variable - Límite) > 0 ?
-        genera_linea("valord " + t_var.image, true);
+genera_linea("valord " + t_var.image, true);
         genera_linea("swap", true);
         genera_linea("sub", true);
         genera_linea("sifalsovea " + lbl_fin, true);
@@ -446,16 +424,16 @@ genera_linea("vea " + lbl_inicio, true);
         break;
         }
       default:
-        jj_la1[14] = jj_gen;
-        ;
+        jj_la1[12] = jj_gen;
+genera_linea("mete 1", true);
       }
       jj_consume_token(HACER);
       Sentencias();
       jj_consume_token(FIN);
-// Incrementamos la variable (ID = ID + 1 por ahora para simplificar)
+// Sumar el incremento al contador
         genera_linea("valori " + t_var.image, true);
         genera_linea("valord " + t_var.image, true);
-        genera_linea("mete 1", true);
+        genera_linea("swap", true); // Ponemos el valor de la variable encima del incremento
         genera_linea("add", true);
         genera_linea("asigna", true);
 
@@ -464,23 +442,23 @@ genera_linea("vea " + lbl_inicio, true);
       break;
       }
     default:
-      jj_la1[15] = jj_gen;
+      jj_la1[13] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
 // Regla diagrama booleanExpr
-  final public void BooleanExpr() throws ParseException {
+  final public void BooleanExpr() throws ParseException {Token t_no = null; Token t_op;
     Expr();
     jj_consume_token(ES);
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case NO:{
-      jj_consume_token(NO);
+      t_no = jj_consume_token(NO);
       break;
       }
     default:
-      jj_la1[16] = jj_gen;
+      jj_la1[14] = jj_gen;
       ;
     }
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -488,32 +466,41 @@ genera_linea("vea " + lbl_inicio, true);
     case MENOR:{
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case MAYOR:{
-        jj_consume_token(MAYOR);
+        t_op = jj_consume_token(MAYOR);
         break;
         }
       case MENOR:{
-        jj_consume_token(MENOR);
+        t_op = jj_consume_token(MENOR);
         break;
         }
       default:
-        jj_la1[17] = jj_gen;
+        jj_la1[15] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       jj_consume_token(QUE);
+      Expr();
+// Si es MAYOR: A - B. Si es MENOR: B - A (usando swap)
+        if (t_op.kind == MAYOR) { genera_linea("sub", true); }
+        else { genera_linea("swap", true); genera_linea("sub", true); }
       break;
       }
     case IGUAL:{
       jj_consume_token(IGUAL);
       jj_consume_token(A);
+      Expr();
+// A EQUAL TO B -> not(A xor B)
+        genera_linea("xor", true);
+        genera_linea("not", true);
       break;
       }
     default:
-      jj_la1[18] = jj_gen;
+      jj_la1[16] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
-    Expr();
+// Si puso NOT, invertimos el resultado final
+    if (t_no != null) genera_linea("not", true);
   }
 
   /** Generated Token Manager. */
@@ -525,7 +512,7 @@ genera_linea("vea " + lbl_inicio, true);
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[19];
+  final private int[] jj_la1 = new int[17];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -533,10 +520,10 @@ genera_linea("vea " + lbl_inicio, true);
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x0,0x0,0x0,0xad000,0x0,0x0,0x0,0x0,0x0,0x1000000,0x40000,0x80000000,0x4000000,0x18000000,0x58000000,};
+      jj_la1_0 = new int[] {0x807ad000,0x807ad000,0x300000,0x800,0x0,0xad000,0x0,0x0,0x0,0x0,0x0,0x1000000,0x40000,0x80000000,0x4000000,0x18000000,0x58000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x2,0x2,0x0,0x0,0x700,0x100,0x100,0x0,0xc,0xc,0x30,0x30,0x340,0x0,0x0,0x2,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x2,0x2,0x0,0x0,0x1c00,0x0,0x30,0x30,0xc0,0xc0,0xd00,0x0,0x0,0x2,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -550,7 +537,7 @@ genera_linea("vea " + lbl_inicio, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -564,7 +551,7 @@ genera_linea("vea " + lbl_inicio, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -574,7 +561,7 @@ genera_linea("vea " + lbl_inicio, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -584,7 +571,7 @@ genera_linea("vea " + lbl_inicio, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -593,7 +580,7 @@ genera_linea("vea " + lbl_inicio, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -602,7 +589,7 @@ genera_linea("vea " + lbl_inicio, true);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -653,12 +640,12 @@ genera_linea("vea " + lbl_inicio, true);
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[43];
+    boolean[] la1tokens = new boolean[45];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 19; i++) {
+    for (int i = 0; i < 17; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -670,7 +657,7 @@ genera_linea("vea " + lbl_inicio, true);
         }
       }
     }
-    for (int i = 0; i < 43; i++) {
+    for (int i = 0; i < 45; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

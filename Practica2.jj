@@ -48,9 +48,8 @@ public class practica2 {
           parser.Axioma(); 
 		  
 		  System.out.print(parser.outputBuffer.toString());
-          System.out.println("Analisis realizado.");
 		  
-          System.out.println("analisis lexico completado con exito");
+          System.out.println("analisis lexico completado");
         } catch (java.io.FileNotFoundException e) {
           System.err.println("error: archivo no encontrado");
         } catch (ParseException e) {
@@ -113,6 +112,11 @@ SKIP :
   | < MIENTRAS: "WHILE" >
   | < HACER: "DO" >
   | < VARYING: "VARYING" >
+  
+  
+  // prueba
+  | < DANDO: "GIVING" >
+  | < ENTRE: "INTO" > // Por si usas DIVIDE A INTO B
 
   // operadores y paréntesis 
   | < MAS: "+" >
@@ -199,43 +203,38 @@ void Literal() :
   | t = <CAD>
       { genera_linea("metecad " + t.image, true); }
 }
-
-/*void Asignar() : {} { 
-  (<MUEVE> | <SUMA> | <RESTA> | <MULTIPLICA> | <DIVIDE>) 
-  ( <ID> | <NUM> | <PA> | <PC> | <MAS> | <MENOS> | <MULT> | <DIV> | <A> | <DE> | <POR> )* }*/
   
 void Asignar() :
 { Token t_destino; }
 {
     ( <MUEVE> Expr() <A> t_destino = <ID>
-      {
-        genera_linea("valori " + t_destino.image, true);
-        genera_linea("swap", true);
-        genera_linea("asigna", true);
-      }
-    )
+      { genera_linea("valori " + t_destino.image, true); genera_linea("swap", true); genera_linea("asigna", true); } )
+      
   | ( <SUMA> Expr() <A> t_destino = <ID>
-      {
-        genera_linea("valord " + t_destino.image, true);
-        genera_linea("add", true);
-        genera_linea("valori " + t_destino.image, true);
-        genera_linea("swap", true);
-        genera_linea("asigna", true);
-      }
-    )
+      { genera_linea("valord " + t_destino.image, true); genera_linea("add", true); 
+        genera_linea("valori " + t_destino.image, true); genera_linea("swap", true); genera_linea("asigna", true); } )
+        
   | ( <RESTA> Expr() <DE> t_destino = <ID>
-      {
-        genera_linea("valord " + t_destino.image, true);
+      { genera_linea("valord " + t_destino.image, true); genera_linea("swap", true); genera_linea("sub", true);
+        genera_linea("valori " + t_destino.image, true); genera_linea("swap", true); genera_linea("asigna", true); } )
+
+  | // MULTIPLY Expr BY Expr GIVING ID
+    ( <MULTIPLICA> Expr() <POR> Expr() <DANDO> t_destino = <ID>
+      { 
+        genera_linea("mul", true); 
+        genera_linea("valori " + t_destino.image, true); 
         genera_linea("swap", true); 
-        genera_linea("sub", true);
-        genera_linea("valori " + t_destino.image, true);
-        genera_linea("swap", true);
-        genera_linea("asigna", true);
-      }
-    )
-    // Añadimos temporalmente MULTIPLY y DIVIDE para evitar errores
-  | ( <MULTIPLICA> Expr() <POR> Expr() ( <ID> )? ) 
-  | ( <DIVIDE> Expr() <DE> Expr() ( <ID> )? )
+        genera_linea("asigna", true); 
+      } )
+
+  | // DIVIDE Expr INTO Expr GIVING ID
+    ( <DIVIDE> Expr() <ENTRE> Expr() <DANDO> t_destino = <ID>
+      { 
+        genera_linea("div", true); 
+        genera_linea("valori " + t_destino.image, true); 
+        genera_linea("swap", true); 
+        genera_linea("asigna", true); 
+      } )
 }
 
 // jerarquia matematica
@@ -293,7 +292,7 @@ void Comparar() :
 void Bucle() :
 { String lbl_inicio, lbl_fin; Token t_var; }
 {
-    ( //  WHILE 
+    ( // 1: WHILE 
       <MIENTRAS> 
       { 
         lbl_inicio = newLabel(); 
@@ -309,11 +308,10 @@ void Bucle() :
         genera_linea(lbl_fin + ":", false); 
       }
     )
-  | ( //  VARYING 
+  | ( // VARYING (Incremento Dinámico) 
       <VARYING> t_var = <ID> 
-      <DE> Expr() // Valor inicial
+      <DE> Expr() //  Inicialización
       {
-        // Inicializamos la variable: ID = Valor Inicial
         genera_linea("valori " + t_var.image, true);
         genera_linea("swap", true);
         genera_linea("asigna", true);
@@ -322,22 +320,22 @@ void Bucle() :
         lbl_fin = newLabel();
         genera_linea(lbl_inicio + ":", false);
       }
-      <A> Expr() // Valor límite
+      <A> Expr() //  Condición de parada
       {
-        // Comparamos: (Variable - Límite) > 0 ?
         genera_linea("valord " + t_var.image, true);
         genera_linea("swap", true);
         genera_linea("sub", true);
         genera_linea("sifalsovea " + lbl_fin, true);
       }
-      ( <POR> Expr() )? // Incremento 
+      // Incremento: si hay 'BY' se evalúa Expr, si no, se mete un 1
+      ( <POR> Expr() | { genera_linea("mete 1", true); } ) 
       <HACER> Sentencias()
       <FIN>
       {
-        // Incrementamos la variable (ID = ID + 1 por ahora)
+        // Sumar el incremento al contador
         genera_linea("valori " + t_var.image, true);
         genera_linea("valord " + t_var.image, true);
-        genera_linea("mete 1", true); 
+        genera_linea("swap", true); // Ponemos el valor de la variable encima del incremento
         genera_linea("add", true);
         genera_linea("asigna", true);
         
@@ -348,11 +346,27 @@ void Bucle() :
 }
 
 // Regla diagrama booleanExpr
-void BooleanExpr() : {} {
-  Expr() <ES> ( <NO> )? 
+void BooleanExpr() : 
+{ Token t_no = null; Token t_op; }
+{
+  Expr() <ES> ( t_no = <NO> )? 
   ( 
-      ( <MAYOR> | <MENOR> ) <QUE> // GREATER THAN / LESS THAN
-    | <IGUAL> <A>                 // EQUAL TO
+      ( t_op = <MAYOR> | t_op = <MENOR> ) <QUE> 
+      Expr() 
+      {
+        // Si es MAYOR: A - B. Si es MENOR: B - A (usando swap)
+        if (t_op.kind == MAYOR) { genera_linea("sub", true); } 
+        else { genera_linea("swap", true); genera_linea("sub", true); }
+      }
+    | <IGUAL> <A> Expr() 
+      { 
+        // A EQUAL TO B -> not(A xor B)
+        genera_linea("xor", true); 
+        genera_linea("not", true); 
+      }
   ) 
-  Expr()
+  { 
+    // Si puso NOT, invertimos el resultado final
+    if (t_no != null) genera_linea("not", true); 
+  }
 }
