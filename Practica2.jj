@@ -1,6 +1,14 @@
+/* 
+   Autor: Enrique González Gutiérrez
+   Fecha: Enero 2026
+*/
+
+
+
+
 /*
  * La secuencia de comandos necesaria para obtener el ejecutable es:
- *     javacc test1.jj 
+ *     javacc Practica2.jj 
  *     javac *.java 
  *     java -cp . test 
 	   java practica2 ejemplosP2y3_2C/eje0.cbl
@@ -11,11 +19,11 @@ options {
   IGNORE_CASE = true;
 }
 
-PARSER_BEGIN(practica2)
+PARSER_BEGIN(CobolCompiler)
   import java.io.FileInputStream;
   import java.io.InputStream;
 
-public class practica2 {
+public class CobolCompiler {
 
 		// Buffer para ir guardando el código de pila generado 
     StringBuilder outputBuffer = new StringBuilder();
@@ -36,7 +44,7 @@ public class practica2 {
     }
 	
 	 public static void main(String args[]) throws ParseException {
-        practica2 parser;
+        CobolCompiler parser;
         InputStream input;
         try {
           if (args.length == 0) {
@@ -44,12 +52,11 @@ public class practica2 {
           } else {
               input = new FileInputStream(args[0]);
           }
-          parser = new practica2(input);
+          parser = new CobolCompiler(input);
           parser.Axioma(); 
 		  
 		  System.out.print(parser.outputBuffer.toString());
-		  
-          System.out.println("analisis lexico completado");
+		   
         } catch (java.io.FileNotFoundException e) {
           System.err.println("error: archivo no encontrado");
         } catch (ParseException e) {
@@ -59,7 +66,7 @@ public class practica2 {
         }
     }
   }
-PARSER_END(practica2)
+PARSER_END(CobolCompiler)
 
 /* analizador lexico - lo que el parser debe de ignorar */
 
